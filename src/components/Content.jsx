@@ -36,45 +36,28 @@ const Content = ({ circles, addCircle, updateCircle, onSelectCircle, links, link
       if (!contentEl) return;
 
       const contentRect = contentEl.getBoundingClientRect();
-      const monitorOffset = monitor.getOffsetFromInitialOffset();
-      if (!monitorOffset) return;
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
 
-      let newLeft, newTop;
-      let circleWidth, circleHeight;
+      let left, top, width, height;
 
       if (item.type === 'new-circle') {
-        const initialSourceOffset = monitor.getInitialSourceClientOffset();
-        const initialClientOffset = monitor.getInitialClientOffset();
-        const clientOffset = monitor.getClientOffset();
-
-        if (!initialSourceOffset || !initialClientOffset || !clientOffset) return;
-
-        const initialDropPositionInContent = {
-            x: initialClientOffset.x - contentRect.left,
-            y: initialClientOffset.y - contentRect.top,
-        };
-
-        const cursorDelta = {
-            x: clientOffset.x - initialClientOffset.x,
-            y: clientOffset.y - initialClientOffset.y,
-        };
-
-        circleWidth = 100;
-        circleHeight = 100;
-        newLeft = initialDropPositionInContent.x + cursorDelta.x;
-        newTop = initialDropPositionInContent.y + cursorDelta.y;
-
+        width = 100; // Default size
+        height = 100;
+        left = clientOffset.x - contentRect.left;
+        top = clientOffset.y - contentRect.top;
       } else { // existing-circle
         const delta = monitor.getDifferenceFromInitialOffset();
-        circleWidth = item.width;
-        circleHeight = item.height;
-        newLeft = item.left + delta.x;
-        newTop = item.top + delta.y;
+        if (!delta) return;
+        width = item.width;
+        height = item.height;
+        left = Math.round(item.left + delta.x);
+        top = Math.round(item.top + delta.y);
       }
 
-      // Clamp the position to the boundaries of the content area
-      const clampedLeft = Math.max(0, Math.min(newLeft, contentRect.width - circleWidth));
-      const clampedTop = Math.max(0, Math.min(newTop, contentRect.height - circleHeight));
+      // Boundary checks
+      const clampedLeft = Math.max(0, Math.min(left, contentRect.width - width));
+      const clampedTop = Math.max(0, Math.min(top, contentRect.height - height));
 
       if (item.type === 'new-circle') {
         addCircle(item, clampedLeft, clampedTop);

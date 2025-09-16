@@ -36,6 +36,8 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
   }));
 
   const handleMouseDown = (e) => {
+    if (isResizing) return; // Prevent clicks while resizing
+
     e.stopPropagation();
     const direction = e.target.dataset.direction;
     if (direction) {
@@ -80,6 +82,12 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
   const elementRef = useRef(null);
   drag(elementRef);
 
+  const getBorderStyle = () => {
+    if (isResizing) return '2px solid #007bff';
+    if (linkingState && linkingState.sourceId === id) return '2px dashed #000';
+    return '1px solid blue';
+  };
+
   return (
     <div
       ref={elementRef}
@@ -102,7 +110,7 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
         style={{
           background: isHovered ? '#aaddff' : 'lightblue',
           borderRadius: '50%',
-          border: linkingState && linkingState.sourceId === id ? '2px dashed #000' : '1px solid blue',
+          border: getBorderStyle(),
           width: '100%',
           height: '100%',
         }}
