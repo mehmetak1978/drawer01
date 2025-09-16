@@ -6,6 +6,21 @@ const ItemTypes = {
   CIRCLE: 'circle',
 };
 
+const handleStyle = {
+  width: '10px',
+  height: '10px',
+  background: '#007bff',
+  border: '1px solid white',
+  borderRadius: '50%',
+};
+
+const handleComponents = {
+  topRight: <div style={handleStyle} />,
+  bottomRight: <div style={handleStyle} />,
+  bottomLeft: <div style={handleStyle} />,
+  topLeft: <div style={handleStyle} />,
+};
+
 const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, linkingState, startLinking }) => {
   const isTemplate = top === undefined || left === undefined;
   const [isHovered, setIsHovered] = useState(false);
@@ -20,7 +35,7 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
     }),
   }));
 
-  const handleClick = (e) => {
+  const handleMouseDown = (e) => {
     e.stopPropagation();
     const direction = e.target.dataset.direction;
     if (direction) {
@@ -69,7 +84,7 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
     <div
       ref={elementRef}
       style={style}
-      onClick={handleClick}
+      onMouseDown={handleMouseDown}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -83,7 +98,7 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
             height: height + d.height,
           });
         }}
-        lockAspectRatio={true}
+        handleComponent={handleComponents}
         style={{
           background: isHovered ? '#aaddff' : 'lightblue',
           borderRadius: '50%',

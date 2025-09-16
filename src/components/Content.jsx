@@ -32,37 +32,54 @@ const Content = ({ circles, addCircle, updateCircle, onSelectCircle, links, link
   const [, drop] = useDrop(() => ({
     accept: ItemTypes.CIRCLE,
     drop: (item, monitor) => {
-      const contentRect = ref.current?.getBoundingClientRect();
-      if (!contentRect) return;
+      const contentEl = ref.current;
+      if (!contentEl) return;
 
-      let left, top, width, height;
+      const contentRect = contentEl.getBoundingClientRect();
+      const monitorOffset = monitor.getOffsetFromInitialOffset();
+      if (!monitorOffset) return;
+
+      let newLeft, newTop;
+      let circleWidth, circleHeight;
 
       if (item.type === 'new-circle') {
+        const initialSourceOffset = monitor.getInitialSourceClientOffset();
+        const initialClientOffset = monitor.getInitialClientOffset();
         const clientOffset = monitor.getClientOffset();
-        width = 100; // Default width
-        height = 100; // Default height
-        left = Math.round(clientOffset.x - contentRect.left - width / 2);
-        top = Math.round(clientOffset.y - contentRect.top - height / 2);
-      } else if (item.type === 'existing-circle') {
+
+        if (!initialSourceOffset || !initialClientOffset || !clientOffset) return;
+
+        const initialDropPositionInContent = {
+            x: initialClientOffset.x - contentRect.left,
+            y: initialClientOffset.y - contentRect.top,
+        };
+
+        const cursorDelta = {
+            x: clientOffset.x - initialClientOffset.x,
+            y: clientOffset.y - initialClientOffset.y,
+        };
+
+        circleWidth = 100;
+        circleHeight = 100;
+        newLeft = initialDropPositionInContent.x + cursorDelta.x;
+        newTop = initialDropPositionInContent.y + cursorDelta.y;
+
+      } else { // existing-circle
         const delta = monitor.getDifferenceFromInitialOffset();
-        width = item.width;
-        height = item.height;
-        left = Math.round(item.left + delta.x);
-        top = Math.round(item.top + delta.y);
-      } else {
-        return;
+        circleWidth = item.width;
+        circleHeight = item.height;
+        newLeft = item.left + delta.x;
+        newTop = item.top + delta.y;
       }
 
-      // Boundary checks
-      left = Math.max(0, left);
-      top = Math.max(0, top);
-      left = Math.min(left, contentRect.width - width);
-      top = Math.min(top, contentRect.height - height);
+      // Clamp the position to the boundaries of the content area
+      const clampedLeft = Math.max(0, Math.min(newLeft, contentRect.width - circleWidth));
+      const clampedTop = Math.max(0, Math.min(newTop, contentRect.height - circleHeight));
 
       if (item.type === 'new-circle') {
-        addCircle(item, left, top);
+        addCircle(item, clampedLeft, clampedTop);
       } else {
-        updateCircle(item.id, { left, top });
+        updateCircle(item.id, { left: clampedLeft, top: clampedTop });
       }
     },
   }));
