@@ -9,10 +9,12 @@ const ItemTypes = {
 const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, linkingState, startLinking }) => {
   const isTemplate = top === undefined || left === undefined;
   const [isHovered, setIsHovered] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CIRCLE,
     item: isTemplate ? { type: 'new-circle' } : { id, top, left, width, height, type: 'existing-circle' },
+    canDrag: !isResizing,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -20,14 +22,15 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
 
   const handleClick = (e) => {
     e.stopPropagation();
+    const direction = e.target.dataset.direction;
+    if (direction) {
+      startLinking(id, direction);
+      return;
+    }
+
     if (!isTemplate && onSelectCircle) {
       onSelectCircle({ id, top, left, width, height });
     }
-  };
-
-  const handleArrowClick = (e, direction) => {
-    e.stopPropagation();
-    startLinking(id, direction);
   };
 
   if (isTemplate) {
@@ -72,7 +75,9 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
     >
       <Resizable
         size={{ width, height }}
+        onResizeStart={() => setIsResizing(true)}
         onResizeStop={(e, direction, ref, d) => {
+          setIsResizing(false);
           updateCircle(id, {
             width: width + d.width,
             height: height + d.height,
@@ -91,10 +96,10 @@ const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, li
       </Resizable>
       {isHovered && !linkingState && (
         <>
-          <div className="arrow top" onClick={(e) => handleArrowClick(e, 'top')}></div>
-          <div className="arrow right" onClick={(e) => handleArrowClick(e, 'right')}></div>
-          <div className="arrow bottom" onClick={(e) => handleArrowClick(e, 'bottom')}></div>
-          <div className="arrow left" onClick={(e) => handleArrowClick(e, 'left')}></div>
+          <div className="arrow top" data-direction="top"></div>
+          <div className="arrow right" data-direction="right"></div>
+          <div className="arrow bottom" data-direction="bottom"></div>
+          <div className="arrow left" data-direction="left"></div>
         </>
       )}
     </div>

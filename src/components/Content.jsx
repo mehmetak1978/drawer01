@@ -35,15 +35,33 @@ const Content = ({ circles, addCircle, updateCircle, onSelectCircle, links, link
       const contentRect = ref.current?.getBoundingClientRect();
       if (!contentRect) return;
 
+      let left, top, width, height;
+
       if (item.type === 'new-circle') {
         const clientOffset = monitor.getClientOffset();
-        const left = Math.round(clientOffset.x - contentRect.left);
-        const top = Math.round(clientOffset.y - contentRect.top);
-        addCircle(item, left, top);
+        width = 100; // Default width
+        height = 100; // Default height
+        left = Math.round(clientOffset.x - contentRect.left - width / 2);
+        top = Math.round(clientOffset.y - contentRect.top - height / 2);
       } else if (item.type === 'existing-circle') {
         const delta = monitor.getDifferenceFromInitialOffset();
-        const left = Math.round(item.left + delta.x);
-        const top = Math.round(item.top + delta.y);
+        width = item.width;
+        height = item.height;
+        left = Math.round(item.left + delta.x);
+        top = Math.round(item.top + delta.y);
+      } else {
+        return;
+      }
+
+      // Boundary checks
+      left = Math.max(0, left);
+      top = Math.max(0, top);
+      left = Math.min(left, contentRect.width - width);
+      top = Math.min(top, contentRect.height - height);
+
+      if (item.type === 'new-circle') {
+        addCircle(item, left, top);
+      } else {
         updateCircle(item.id, { left, top });
       }
     },
