@@ -1,0 +1,151 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.left-menu {
+  min-width: 220px;
+  width: 220px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f7f7f7;
+}
+
+.left-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.left-menu-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.left-menu p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.content {
+  flex-grow: 1;
+  position: relative;
+  background-color: #fff;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+}
+
+.top-menu h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.status-bar {
+  display: flex;
+  gap: 30px;
+  border-top: 1px solid #ccc;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  font-size: 14px;
+  color: #333;
+}
+
+.arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.arrow:hover {
+  background-color: #007bff;
+}
+
+.arrow.top {
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.arrow.right {
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
+}
+
+.arrow.bottom {
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+}
+
+.arrow.left {
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #555;
+  padding: 0 5px;
+}
+
+button.close-btn:hover {
+  color: #000;
+}
