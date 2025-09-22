@@ -1,3 +1,5 @@
+@import '@xyflow/react/dist/style.css';
+
 body, html {
   margin: 0;
   padding: 0;
@@ -49,14 +51,22 @@ body, html {
   margin-bottom: 15px;
 }
 
+.dnd-node {
+  height: 50px;
+  width: 50px;
+  background: lightblue;
+  border: 1px solid blue;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+}
+
 .content {
   flex-grow: 1;
   position: relative;
-  background-color: #fff;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
 }
 
 .top-menu {
@@ -81,46 +91,6 @@ body, html {
   background-color: #f8f8f8;
   font-size: 14px;
   color: #333;
-}
-
-.arrow {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background-color: #333;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.arrow:hover {
-  background-color: #007bff;
-}
-
-.arrow.top {
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.arrow.right {
-  right: -18px;
-  top: 50%;
-  transform: translateY(-50%);
-  clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
-}
-
-.arrow.bottom {
-  bottom: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-}
-
-.arrow.left {
-  left: -18px;
-  top: 50%;
-  transform: translateY(-50%);
-  clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
 }
 
 button {

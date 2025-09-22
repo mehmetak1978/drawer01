@@ -1,19 +1,14 @@
 import React, { useState, useCallback } from 'react';
-import ReactFlow, {
+import {
   useNodesState,
   useEdgesState,
   addEdge,
-  Controls,
-  Background,
 } from '@xyflow/react';
-
-import '@xyflow/react/dist/style.css';
 
 import TopMenu from './components/TopMenu';
 import LeftMenu from './components/LeftMenu';
 import Content from './components/Content';
 import StatusBar from './components/StatusBar';
-import './App.css';
 
 const initialNodes = [];
 let id = 0;
