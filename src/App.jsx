@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import {
-  ReactFlowProvider,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -60,19 +59,17 @@ function App() {
     <div className="app">
       <TopMenu toggleLeftMenu={toggleLeftMenu} />
       <div className="main-container">
-        <ReactFlowProvider>
-          {isLeftMenuOpen && <LeftMenu closeLeftMenu={toggleLeftMenu} />}
-          <Content
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onNodeClick={onNodeClick}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-          />
-        </ReactFlowProvider>
+        {isLeftMenuOpen && <LeftMenu closeLeftMenu={toggleLeftMenu} />}
+        <Content
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onNodeClick={onNodeClick}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+        />
       </div>
       <StatusBar selectedNode={selectedNode} />
     </div>
