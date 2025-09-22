@@ -6,7 +6,10 @@ const StatusBar = ({ selectedNode }) => {
       {selectedNode ? (
         <>
           <span>
-            Size: {Math.round(selectedNode.width)}x{Math.round(selectedNode.height)}
+            Selected: {selectedNode.id}
+          </span>
+          <span style={{ marginLeft: '20px' }}>
+            Size: {selectedNode.width ? `${Math.round(selectedNode.width)}x${Math.round(selectedNode.height)}` : 'auto'}
           </span>
           <span style={{ marginLeft: '20px' }}>
             Position: ({Math.round(selectedNode.position.x)}, {Math.round(selectedNode.position.y)})

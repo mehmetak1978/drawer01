@@ -1,11 +1,6 @@
 import React from 'react';
 
 const LeftMenu = ({ closeLeftMenu }) => {
-  const onDragStart = (event, nodeType) => {
-    event.dataTransfer.setData('application/reactflow', nodeType);
-    event.dataTransfer.effectAllowed = 'move';
-  };
-
   return (
     <div className="left-menu">
       <div className="left-menu-header">
@@ -22,6 +17,11 @@ const LeftMenu = ({ closeLeftMenu }) => {
       </div>
     </div>
   );
+};
+
+const onDragStart = (event, nodeType) => {
+  event.dataTransfer.setData('application/reactflow', nodeType);
+  event.dataTransfer.effectAllowed = 'move';
 };
 
 export default LeftMenu;

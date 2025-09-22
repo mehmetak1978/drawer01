@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
+  ReactFlowProvider,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -11,8 +12,6 @@ import Content from './components/Content';
 import StatusBar from './components/StatusBar';
 
 const initialNodes = [];
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 function App() {
   const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(true);
@@ -33,6 +32,9 @@ function App() {
     setSelectedNode(node);
   };
 
+  let id = 0;
+  const getId = () => `dndnode_${id++}`;
+
   const onDrop = useCallback(
     (type, position) => {
       const newNode = {
@@ -40,6 +42,8 @@ function App() {
         type,
         position,
         data: { label: `${type} node` },
+        // Custom nodes need explicit size
+        style: { width: 100, height: 100 },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -47,26 +51,28 @@ function App() {
     [setNodes],
   );
 
-  const onDragOver = (event) => {
+  const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
-  };
+  }, []);
 
   return (
     <div className="app">
       <TopMenu toggleLeftMenu={toggleLeftMenu} />
       <div className="main-container">
-        {isLeftMenuOpen && <LeftMenu closeLeftMenu={toggleLeftMenu} />}
-        <Content
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-        />
+        <ReactFlowProvider>
+          {isLeftMenuOpen && <LeftMenu closeLeftMenu={toggleLeftMenu} />}
+          <Content
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onNodeClick={onNodeClick}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+          />
+        </ReactFlowProvider>
       </div>
       <StatusBar selectedNode={selectedNode} />
     </div>
