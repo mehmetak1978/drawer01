@@ -1,131 +1,25 @@
-import React, { useRef, useState } from 'react';
-import { useDrag } from 'react-dnd';
-import { Resizable } from 're-resizable';
+import React from 'react';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
 
-const ItemTypes = {
-  CIRCLE: 'circle',
-};
-
-const handleStyle = {
-  width: '10px',
-  height: '10px',
-  background: '#007bff',
-  border: '1px solid white',
-  borderRadius: '50%',
-};
-
-const handleComponents = {
-  topRight: <div style={handleStyle} />,
-  bottomRight: <div style={handleStyle} />,
-  bottomLeft: <div style={handleStyle} />,
-  topLeft: <div style={handleStyle} />,
-};
-
-const Circle = ({ id, top, left, width, height, onSelectCircle, updateCircle, linkingState, startLinking }) => {
-  const isTemplate = top === undefined || left === undefined;
-  const [isHovered, setIsHovered] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
-
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemTypes.CIRCLE,
-    item: isTemplate ? { type: 'new-circle' } : { id, top, left, width, height, type: 'existing-circle' },
-    canDrag: !isResizing,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-
-  const handleMouseDown = (e) => {
-    if (isResizing) return; // Prevent clicks while resizing
-
-    e.stopPropagation();
-    const direction = e.target.dataset.direction;
-    if (direction) {
-      startLinking(id, direction);
-      return;
-    }
-
-    if (!isTemplate && onSelectCircle) {
-      onSelectCircle({ id, top, left, width, height });
-    }
-  };
-
-  if (isTemplate) {
-    return (
-      <div
-        ref={drag}
-        style={{
-          width: '50px',
-          height: '50px',
-          borderRadius: '50%',
-          backgroundColor: 'lightblue',
-          border: '1px solid blue',
-          margin: '10px',
-          cursor: 'grab',
-          opacity: isDragging ? 0.5 : 1,
-        }}>
-      </div>
-    );
-  }
-
-  const style = {
-    position: 'absolute',
-    top: `${top}px`,
-    left: `${left}px`,
-    width: `${width}px`,
-    height: `${height}px`,
-    opacity: isDragging ? 0.5 : 1,
-    cursor: linkingState ? 'crosshair' : 'move',
-    zIndex: isHovered || isDragging ? 10 : 1,
-  };
-
-  const elementRef = useRef(null);
-  drag(elementRef);
-
-  const getBorderStyle = () => {
-    if (isResizing) return '2px solid #007bff';
-    if (linkingState && linkingState.sourceId === id) return '2px dashed #000';
-    return '1px solid blue';
-  };
-
+const Circle = ({ data, selected }) => {
   return (
-    <div
-      ref={elementRef}
-      style={style}
-      onMouseDown={handleMouseDown}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Resizable
-        size={{ width, height }}
-        onResizeStart={() => setIsResizing(true)}
-        onResizeStop={(e, direction, ref, d) => {
-          setIsResizing(false);
-          updateCircle(id, {
-            width: width + d.width,
-            height: height + d.height,
-          });
-        }}
-        handleComponent={handleComponents}
+    <>
+      <NodeResizer isVisible={selected} minWidth={50} minHeight={50} />
+      <div
         style={{
-          background: isHovered ? '#aaddff' : 'lightblue',
-          borderRadius: '50%',
-          border: getBorderStyle(),
           width: '100%',
           height: '100%',
+          background: '#aaddff',
+          border: `1px solid ${selected ? '#007bff' : '#1a192b'}`,
+          borderRadius: '50%',
         }}
       >
-        <div style={{ width: '100%', height: '100%', borderRadius: '50%' }}></div>
-      </Resizable>
-      {isHovered && !linkingState && (
-        <>
-          <div className="arrow top" data-direction="top"></div>
-          <div className="arrow right" data-direction="right"></div>
-          <div className="arrow bottom" data-direction="bottom"></div>
-          <div className="arrow left" data-direction="left"></div>
-        </>
-      )}
-    </div>
+        <Handle type="source" position={Position.Top} />
+        <Handle type="source" position={Position.Right} />
+        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={Position.Left} />
+      </div>
+    </>
   );
 };
 

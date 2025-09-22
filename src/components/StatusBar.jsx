@@ -1,15 +1,19 @@
 import React from 'react';
 
-const StatusBar = ({ selectedCircle }) => {
+const StatusBar = ({ selectedNode }) => {
   return (
     <div className="status-bar">
-      {selectedCircle ? (
+      {selectedNode ? (
         <>
-          <span>Size: {selectedCircle.width}x{selectedCircle.height}</span>
-          <span style={{ marginLeft: '20px' }}>Position: ({selectedCircle.left}, {selectedCircle.top})</span>
+          <span>
+            Size: {Math.round(selectedNode.width)}x{Math.round(selectedNode.height)}
+          </span>
+          <span style={{ marginLeft: '20px' }}>
+            Position: ({Math.round(selectedNode.position.x)}, {Math.round(selectedNode.position.y)})
+          </span>
         </>
       ) : (
-        <span>No circle selected</span>
+        <span>No node selected</span>
       )}
     </div>
   );

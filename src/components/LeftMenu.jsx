@@ -1,7 +1,11 @@
 import React from 'react';
-import Circle from './Circle';
 
 const LeftMenu = ({ closeLeftMenu }) => {
+  const onDragStart = (event, nodeType) => {
+    event.dataTransfer.setData('application/reactflow', nodeType);
+    event.dataTransfer.effectAllowed = 'move';
+  };
+
   return (
     <div className="left-menu">
       <div className="left-menu-header">
@@ -9,7 +13,13 @@ const LeftMenu = ({ closeLeftMenu }) => {
         <button onClick={closeLeftMenu} className="close-btn">&times;</button>
       </div>
       <p>Drag a circle to the canvas:</p>
-      <Circle />
+      <div
+        className="dnd-node"
+        onDragStart={(event) => onDragStart(event, 'circle')}
+        draggable
+      >
+        Circle
+      </div>
     </div>
   );
 };
