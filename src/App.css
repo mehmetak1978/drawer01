@@ -133,19 +133,19 @@ button.close-btn:hover {
   background: #007bff;
 }
 
+.custom-handle {
+  z-index: 10;
+}
+
 .react-flow__handle-top.custom-handle {
-  top: -12px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 .react-flow__handle-bottom.custom-handle {
-  bottom: -12px;
   clip-path: polygon(50% 100%, 0 0, 100% 0);
 }
 .react-flow__handle-left.custom-handle {
-  left: -12px;
   clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
 }
 .react-flow__handle-right.custom-handle {
-  right: -12px;
   clip-path: polygon(100% 50%, 0% 100%, 0% 0%);
 }
