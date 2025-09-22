@@ -20,6 +20,7 @@ const Content = ({
   onNodeClick,
   onDrop,
   onDragOver,
+  edgeTypes,
 }) => {
   const { screenToFlowPosition } = useReactFlow();
 
@@ -53,6 +54,7 @@ const Content = ({
         onDrop={handleDrop}
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
       >
         <Controls />

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   useNodesState,
   useEdgesState,
@@ -9,8 +9,13 @@ import TopMenu from './components/TopMenu';
 import LeftMenu from './components/LeftMenu';
 import Content from './components/Content';
 import StatusBar from './components/StatusBar';
+import CustomEdge from './components/CustomEdge';
 
 const initialNodes = [];
+
+const edgeTypes = {
+  custom: CustomEdge,
+};
 
 function App() {
   const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(true);
@@ -19,7 +24,7 @@ function App() {
   const [selectedNode, setSelectedNode] = useState(null);
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => setEdges((eds) => addEdge({ ...params, type: 'custom' }, eds)),
     [setEdges],
   );
 
@@ -69,6 +74,7 @@ function App() {
           onNodeClick={onNodeClick}
           onDrop={onDrop}
           onDragOver={onDragOver}
+          edgeTypes={edgeTypes}
         />
       </div>
       <StatusBar selectedNode={selectedNode} />

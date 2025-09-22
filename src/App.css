@@ -120,6 +120,13 @@ button.close-btn:hover {
   color: #000;
 }
 
+/* This wrapper creates an invisible hover area around the node */
+.node-wrapper {
+  position: relative;
+  padding: 20px;
+  margin: -20px;
+}
+
 .node-wrapper:hover .custom-handle {
   opacity: 1;
 }
@@ -140,14 +147,18 @@ button.close-btn:hover {
 }
 
 .react-flow__handle-top.custom-handle {
+  top: 10px; /* Position within the top padding */
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 .react-flow__handle-bottom.custom-handle {
+  bottom: 10px; /* Position within the bottom padding */
   clip-path: polygon(50% 100%, 0 0, 100% 0);
 }
 .react-flow__handle-left.custom-handle {
+  left: 10px; /* Position within the left padding */
   clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
 }
 .react-flow__handle-right.custom-handle {
+  right: 10px; /* Position within the right padding */
   clip-path: polygon(100% 50%, 0% 100%, 0% 0%);
 }
